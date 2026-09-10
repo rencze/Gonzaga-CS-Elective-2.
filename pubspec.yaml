@@ -57,6 +57,15 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - lib/images/logo.png
+    - lib/images/hero.png
+    - lib/images/wireless_mouse.png
+    - lib/images/mechanical_keybaord.png
+    - lib/images/wireless_headphone.png
+    - lib/images/hd_webcam.png
+    - lib/images/usb-c_hub.png
+    - lib/images/portable_ssd.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

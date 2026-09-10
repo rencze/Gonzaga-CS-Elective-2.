@@ -1,124 +1,110 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import '../data/products.dart';
-import '../widgets/product_card.dart';
+import '../state/favorites_controller.dart';
+import '../widgets/product_grid.dart';
+import '../widgets/shop_hero.dart';
+import '../widgets/shop_navigation.dart';
+import '../widgets/shop_brand.dart';
 
-class HomeScreen extends StatelessWidget {
-  final VoidCallback onThemeToggle;
-
+class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
     required this.onThemeToggle,
+    required this.favorites,
   });
+  final VoidCallback onThemeToggle;
+  final FavoritesController favorites;
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final _featuredKey = GlobalKey();
+
+  void _shop() {
+    final section = _featuredKey.currentContext;
+    if (section != null) {
+      Scrollable.ensureVisible(
+        section,
+        duration: MediaQuery.disableAnimationsOf(context)
+            ? Duration.zero
+            : const Duration(milliseconds: 350),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode =
-        Theme.of(context).brightness == Brightness.dark;
-
+    final theme = Theme.of(context);
+    final dark = theme.brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tech Shop'),
+        titleSpacing: 16,
+        title: const ShopBrand(),
         actions: [
           IconButton(
-            tooltip: 'Toggle theme',
-            onPressed: onThemeToggle,
-            icon: Icon(
-              isDarkMode
-                  ? Icons.light_mode
-                  : Icons.dark_mode,
-            ),
+            tooltip: 'Search products',
+            onPressed: () => context.push('/products?search=1'),
+            icon: const Icon(Icons.search),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 6),
+          IconButton(
+            tooltip: dark ? 'Switch to light theme' : 'Switch to dark theme',
+            onPressed: widget.onThemeToggle,
+            icon: Icon(dark ? Icons.light_mode_outlined : Icons.dark_mode),
+          ),
+          const SizedBox(width: 6),
+          const CartButton(),
+          const SizedBox(width: 12),
         ],
       ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          final contentWidth =
-              constraints.maxWidth > 1200
-                  ? 1200.0
-                  : constraints.maxWidth;
-
-          int columnCount;
-
-          if (contentWidth >= 900) {
-            columnCount = 4;
-          } else if (contentWidth >= 600) {
-            columnCount = 3;
-          } else {
-            columnCount = 2;
-          }
-
-          final cardHeight = contentWidth >= 900
-              ? 300.0
-              : contentWidth >= 600
-                  ? 280.0
-                  : 250.0;
-
-          return Center(
-            child: SizedBox(
-              width: contentWidth,
-              height: constraints.maxHeight,
+      body: SafeArea(
+        top: false,
+        child: SingleChildScrollView(
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1120),
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                ),
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const SizedBox(height: 16),
-
-                    Text(
-                      'Products',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall,
-                    ),
-
-                    const SizedBox(height: 4),
-
-                    Text(
-                      'Browse our latest tech accessories',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium,
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    Expanded(
-                      child: GridView.builder(
-                        itemCount: products.length,
-                        gridDelegate:
-                            SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: columnCount,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 16,
-                          mainAxisExtent: cardHeight,
+                    ShopHero(onShop: _shop),
+                    const SizedBox(height: 28),
+                    Wrap(
+                      key: _featuredKey,
+                      alignment: WrapAlignment.spaceBetween,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 12,
+                      children: [
+                        Text(
+                          'Featured Products',
+                          style: theme.textTheme.titleLarge,
                         ),
-                        itemBuilder: (context, index) {
-                          final product =
-                              products[index];
-
-                          return ProductCard(
-                            product: product,
-                            onTap: () {
-                              context.push(
-                                '/product/${product.id}',
-                              );
-                            },
-                          );
-                        },
-                      ),
+                        TextButton.icon(
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            textStyle: theme.textTheme.labelMedium,
+                          ),
+                          onPressed: () => context.push('/products'),
+                          iconAlignment: IconAlignment.end,
+                          icon: const Icon(Icons.arrow_forward, size: 20),
+                          label: const Text('View all products'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    ProductGrid(
+                      products: products,
+                      favorites: widget.favorites,
                     ),
                   ],
                 ),
               ),
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
