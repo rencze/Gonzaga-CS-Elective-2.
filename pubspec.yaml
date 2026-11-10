@@ -35,6 +35,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   go_router: ^18.0.1
+  flutter_riverpod: ^3.4.3
+  supabase_flutter: ^2.12.0
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +68,31 @@ flutter:
     - lib/images/hd_webcam.png
     - lib/images/usb-c_hub.png
     - lib/images/portable_ssd.png
+    - lib/images/generated/bluetooth_speaker.png
+    - lib/images/generated/wireless_earbuds.png
+    - lib/images/generated/usb_microphone.png
+    - lib/images/generated/wireless_controller.png
+    - lib/images/generated/gaming_mouse.png
+    - lib/images/generated/gaming_headset.png
+    - lib/images/generated/portable_monitor.png
+    - lib/images/generated/monitor_light_bar.png
+    - lib/images/generated/usb_c_dock.png
+    - lib/images/generated/gan_charger.png
+    - lib/images/generated/power_bank.png
+    - lib/images/generated/wifi_router.png
+    - lib/images/generated/laptop_stand.png
+    - lib/images/generated/ring_light.png
+    - lib/images/generated/drawing_tablet.png
+    - lib/images/generated/smartwatch.png
+    - lib/images/generated/ereader.png
+    - lib/images/generated/usb_flash_drive.png
+    - lib/images/generated/capture_card.png
+    - lib/images/generated/cooling_pad.png
+    - lib/images/generated/nas_enclosure.png
+    - lib/images/generated/mechanical_numpad.png
+    - lib/images/generated/desk_lamp.png
+    - lib/images/generated/mini_projector.png
+    - lib/images/generated/phone_tripod.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

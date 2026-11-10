@@ -23,8 +23,26 @@ Home product grid -> Product detail -> Add to Cart -> Cart -> Checkout confirmat
 - Checkout snapshots the order, clears the cart once, and shows an itemized
   confirmation. Empty-cart navigation to `/checkout` redirects home.
 
-This is a frontend demo with no payment or backend. Reviews are explicitly
-labeled fictional samples. Cart and favorites reset when the app restarts.
+The cart and favorites are local demo state; reviews are explicitly labeled
+fictional samples. The catalog can load price-filtered pages from Supabase, with
+six products per page. Without Supabase credentials it uses the bundled catalog
+of 31 products for local preview.
+
+## Price filtering and Supabase pagination
+
+Run `supabase/seed.sql` in the Supabase SQL Editor to create the `products`
+table, add a public read policy, and load all 31 sample products. Start the app with the Supabase URL
+and anon key supplied as compile-time values:
+
+```powershell
+flutter run --dart-define=SUPABASE_URL=https://YOUR_PROJECT.supabase.co --dart-define=SUPABASE_ANON_KEY=YOUR_ANON_KEY
+```
+
+The catalog state is handled by Riverpod. The price slider sends inclusive
+minimum and maximum bounds to the query, and the page controls use Supabase
+range pagination. The query requests six rows at a time and obtains an exact
+count for the page indicator. The bundled sample catalog and SQL seed contain
+31 products, so the catalog demonstrates five full pages and one final product.
 
 The UI refinements follow [Baymard's product-list information guidance](https://baymard.com/blog/product-listing-information),
 [sorting research](https://baymard.com/blog/essential-sort-types), and

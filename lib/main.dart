@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'router/app_router.dart';
 import 'theme/app_theme.dart';
@@ -8,7 +10,17 @@ import 'state/favorites_controller.dart';
 import 'state/cart_inherited.dart';
 
 void main() {
-  runApp(const ShopApp());
+  const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
+  const supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
+  if (supabaseUrl.isNotEmpty && supabaseAnonKey.isNotEmpty) {
+    Supabase.initialize(url: supabaseUrl, publishableKey: supabaseAnonKey).then(
+      (_) {
+        runApp(const ProviderScope(child: ShopApp()));
+      },
+    );
+  } else {
+    runApp(const ProviderScope(child: ShopApp()));
+  }
 }
 
 class ShopApp extends StatefulWidget {
