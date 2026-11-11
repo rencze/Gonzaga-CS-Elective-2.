@@ -6,6 +6,7 @@ import '../widgets/product_grid.dart';
 import '../widgets/shop_hero.dart';
 import '../widgets/shop_navigation.dart';
 import '../widgets/shop_brand.dart';
+import '../widgets/auth_action.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -54,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: widget.onThemeToggle,
             icon: Icon(dark ? Icons.light_mode_outlined : Icons.dark_mode),
           ),
+          const AuthAction(),
           const SizedBox(width: 6),
           const CartButton(),
           const SizedBox(width: 12),

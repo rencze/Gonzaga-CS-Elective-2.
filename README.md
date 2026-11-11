@@ -44,6 +44,25 @@ range pagination. The query requests six rows at a time and obtains an exact
 count for the page indicator. The bundled sample catalog and SQL seed contain
 31 products, so the catalog demonstrates five full pages and one final product.
 
+## Google sign-in
+
+When Supabase URL and anon key are configured, the home screen account icon
+offers Google sign-in and sign-out. In the Supabase Dashboard, enable Google
+under **Authentication → Sign In / Providers**, add the Google OAuth client ID
+and secret, and register the Supabase callback URL shown on that provider page
+with Google. Add `gonzaga-techshop://login-callback/` to **Authentication → URL
+Configuration → Redirect URLs**. For web, also allow the deployed app URL.
+Android and iOS deep-link handlers for the custom callback are included.
+
+Run with the same compile-time values used by the catalog:
+
+```powershell
+flutter run --dart-define=SUPABASE_URL=https://YOUR_PROJECT.supabase.co --dart-define=SUPABASE_ANON_KEY=YOUR_ANON_KEY
+```
+
+Without Supabase credentials, the app stays in its existing local preview mode
+and hides the account action.
+
 The UI refinements follow [Baymard's product-list information guidance](https://baymard.com/blog/product-listing-information),
 [sorting research](https://baymard.com/blog/essential-sort-types), and
 [NN/g's empty-state guidance](https://www.nngroup.com/articles/empty-state-interface-design/):
